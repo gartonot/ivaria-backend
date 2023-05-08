@@ -20,7 +20,7 @@ class CreateDishesTable extends Migration
             $table->string('price');
             $table->string('img_src')->nullable();
             $table->unsignedBigInteger('dish_categories_id');
-            $table->foreign('categories_id')
+            $table->foreign('dish_categories_id')
                 ->references('id')
                 ->on('dish_categories')
                 ->onDelete('cascade');
