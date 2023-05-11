@@ -12,10 +12,17 @@ class Order extends Model
     use HasFactory;
     use SoftDeletes;
 
+    public const NEW_STATUS = 'new';
+
     protected $fillable = [
         'username',
         'phone',
         'total_amount',
+        'status',
+    ];
+
+    protected $attributes = [
+        'status' => self::NEW_STATUS,
     ];
 
     public function dishes(): BelongsToMany

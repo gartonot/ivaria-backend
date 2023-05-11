@@ -17,6 +17,7 @@ class OrderResource extends JsonResource
             'id' => $this->resource->id,
             'username' => $this->resource->username,
             'phone' => $this->resource->phone,
+            'status' => $this->resource->status,
             'created_at' => $this->resource->created_at,
             'dishes' => $this->whenLoaded('dishes', function () {
                 return DishResource::collection($this->resource->dishes);

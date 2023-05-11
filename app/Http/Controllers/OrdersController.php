@@ -23,6 +23,18 @@ class OrdersController extends Controller
 
     public function store(OrderRequest $request)
     {
-        return new OrderResource(app(OrderManager::class)->store($request->validated()));
+        return new OrderResource(app(OrderManager::class, ['order' => null])->store($request->validated()));
+    }
+
+    public function destroy(Request $request, $orderId)
+    {
+        app(OrderManager::class, ['order' => Order::query()->findOrFail($orderId)])->delete();
+        return response()->noContent();
+    }
+
+    public function update(OrderRequest $request, $orderId)
+    {
+        return app(OrderManager::class, ['order' => Order::query()->findOrFail($orderId)])
+            ->update($request->validated());
     }
 }
