@@ -16,7 +16,9 @@ class OrderRequest extends FormRequest
         return [
             'username' => 'required|string',
             'phone' => 'required|string',
+            'status' => 'required|string',
             'dishes' => 'required|array',
+            'dishes.*' => 'required|array',
             'dishes.*.id' => 'integer|exists:dishes,id',
             'dishes.*.count' => 'integer',
         ];
