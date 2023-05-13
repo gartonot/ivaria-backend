@@ -17,6 +17,7 @@ class OrderRequest extends FormRequest
             'username' => 'required|string',
             'phone' => 'required|string',
             'dishes' => 'required|array',
+            'dishes.*' => 'required|array',
             'dishes.*.id' => 'integer|exists:dishes,id',
             'dishes.*.count' => 'integer',
         ];
