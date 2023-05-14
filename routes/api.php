@@ -16,8 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 Route::middleware('checkAuth')->group(function () {
     Route::apiResource('orders', OrdersController::class)->only(['index', 'update', 'destroy']);
-    Route::apiResource('orders', OrdersController::class)->only(['store'])->withoutMiddleware('checkAuth');
 });
+
+Route::post('orders', [OrdersController::class, 'store']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
