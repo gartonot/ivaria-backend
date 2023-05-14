@@ -19,6 +19,7 @@ class DishResource extends JsonResource
             'description' => $this->resource->description,
             'img_src' => $this->resource->img_src,
             'created_at' => $this->resource->created_at,
+            'deleted_at' => $this->resource->deleted_at,
             $this->mergeWhen($this->resource->pivot, [
                 'price' => $this->resource->pivot->price,
                 'count' => $this->resource->pivot->count,

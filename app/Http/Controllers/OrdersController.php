@@ -14,10 +14,11 @@ class OrdersController extends Controller
 
     public function index(Request $request)
     {
-        $orders = Order::with('dishes');
-        if ($tel = $request->get('tel')) {
-            $orders->where('phone', 'LIKE', "%$tel%");
-        }
+        $orders = Order::with(['dishes' => function ($query) {
+            $query->withTrashed();
+        }])->when($request->get('tel'), function ($query, $tel) {
+            $query->where('phone', 'LIKE', "%$tel%");
+        });
         return OrderResource::collection($orders->paginate(self::ORDERS_PER_PAGE));
     }
 
