@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DishShortResource;
 use App\Models\DishCategories;
 use App\Models\Dishes;
 use Illuminate\Http\Request;
@@ -10,68 +11,16 @@ use Illuminate\Support\Facades\Validator;
 
 class DishesController extends Controller
 {
+    private const MAX_DISHES_PER_PAGE = 15;
     public function getDishes(Request $request){
-        $dishes = [];
-        $dish_categories = [];
+        $dishes = Dishes::query()->with('dish_categories');
+        $dishes->when($request->input('category_id'), function ($query, $categoryId) {
+            return $query->where('dish_categories_id', $categoryId);
+        });
 
-        if($request->query('category_id') !== null){
-
-            $category = DishCategories::find($request->query('category_id'));
-            if($category === null){
-                return response()->json([
-                    'error' => [
-                        'code' => 404,
-                        'message' => 'Data with that id doesnt exist'
-                    ]
-                ], 404);
-            }
-            $dishes = $category->dishes;
-        }
-
-        else if($request->query('count') !== null){
-            $dishes = Dishes::take($request->query('count'))->get();
-        }
-
-        else{
-            $dishes = Dishes::all();
-            $dish_categories = DishCategories::all();
-        }
-
-        $changed_dishes = [];
-
-        foreach ($dishes as $dish_item){
-            $category_dish_by_id = DishCategories::select('name')->find($dish_item['dish_categories_id']);
-            $sorted_dishes = [
-                'id' => $dish_item['id'],
-                'title' => $dish_item['title'],
-                'description' => $dish_item['description'],
-                'price' => $dish_item['price'],
-                'imgSrc' => $dish_item['img_src'],
-                'category' => [
-                    'id' => $dish_item['dish_categories_id'],
-                    'name' => $category_dish_by_id['name'],
-                ],
-                'publishedAt' => $dish_item['updated_at'] ?? $dish_item['created_at'],
-            ];
-            array_push($changed_dishes, $sorted_dishes);
-        }
-
-        $changed_categories = [];
-        foreach ($dish_categories as $category_item){
-            $sorted_categories = [
-                'id' => $category_item['id'],
-                'name' => $category_item['name']
-            ];
-            array_push($changed_categories, $sorted_categories);
-        }
-
-        return response()->json([
-            'data' => [
-                'dishes' => $changed_dishes,
-                'categories' => $changed_categories
-            ]
-
-        ], 200);
+        return DishShortResource::collection(
+            $dishes->paginate(min($request->input('count'), self::MAX_DISHES_PER_PAGE))
+        );
     }
 
     public function getDishesByAmount(Request $request){
