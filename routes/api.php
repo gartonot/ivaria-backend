@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\ReservationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,9 +17,11 @@ use Illuminate\Support\Facades\Route;
 */
 Route::middleware('checkAuth')->group(function () {
     Route::apiResource('orders', OrdersController::class)->only(['index', 'update', 'destroy']);
+    Route::apiResource('reservations', ReservationController::class)->only(['index', 'update', 'destroy']);
 });
 
 Route::post('orders', [OrdersController::class, 'store']);
+Route::post('reservations', [ReservationController::class, 'store']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
