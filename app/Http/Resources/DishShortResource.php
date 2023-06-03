@@ -17,6 +17,7 @@ class DishShortResource extends JsonResource
             'title' => $this->resource->title,
             'description' => $this->resource->description,
             'img_src' => $this->resource->img_src,
+            'price' => $this->resource->price,
             'created_at' => $this->resource->created_at,
             'deleted_at' => $this->resource->deleted_at,
             'updated_at' => $this->resource->updated_at,
