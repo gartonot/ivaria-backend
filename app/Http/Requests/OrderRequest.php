@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class OrderRequest extends FormRequest
 {
@@ -19,7 +20,12 @@ class OrderRequest extends FormRequest
             'status' => 'required|string',
             'dishes' => 'required|array',
             'dishes.*' => 'required|array',
-            'dishes.*.id' => 'integer|exists:dishes,id',
+            'dishes.*.id' => [
+                'integer',
+                Rule::exists('dishes')->where(function ($query) {
+                   return $query->whereNull('deleted_at');
+                }),
+            ],
             'dishes.*.count' => 'integer',
         ];
     }
