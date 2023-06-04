@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Events\OrderCreated;
+use App\Events\ReservationCreated;
 use App\Models\Reservation;
 
 class ReservationManager
@@ -18,7 +18,7 @@ class ReservationManager
     {
         $this->reservation = app(Reservation::class)->fill($params);
         $this->reservation->save();
-        event(new OrderCreated($this->reservation));
+        event(new ReservationCreated($this->reservation));
 
         return $this->reservation;
     }
