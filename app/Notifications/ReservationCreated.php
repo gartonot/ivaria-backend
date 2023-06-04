@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use App\Models\Order;
 use App\Models\Reservation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -32,7 +31,7 @@ class ReservationCreated extends Notification implements ShouldQueue
             'name' => $this->reservation->name,
             'phone' => $this->reservation->phone,
             'guests' => $this->reservation->guests,
-            'date' => $this->reservation->date,
+            'date' => $this->reservation->date->toDateTimeString(),
             'createdAt' => $this->reservation->created_at,
         ]);
     }

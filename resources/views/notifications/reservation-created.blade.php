@@ -12,8 +12,7 @@
     <p>Имя: <b>{{ $name }}</b></p>
     <p>Телефон: <b>{{ $phone }}</b></p>
     <p>Кол-во гостей: <b>{{ $guests }}</b></p>
-    <p>Дата для бронирования: <b>@php((new \Carbon\Carbon($date))->toDateString())</b></p>
-    <p>Время для бронирования: <b>@php((new \Carbon\Carbon($date))->toTimeString())</b></p>
+    <p>Дата и время бронирования: <b>{{ $date }}</b></p>
 </div>
 </body>
 </html>
