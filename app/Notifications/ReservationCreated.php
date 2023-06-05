@@ -31,7 +31,7 @@ class ReservationCreated extends Notification implements ShouldQueue
             'name' => $this->reservation->name,
             'phone' => $this->reservation->phone,
             'guests' => $this->reservation->guests,
-            'date' => $this->reservation->date->toDateTimeString(),
+            'date' => $this->reservation->date ? $this->reservation->date->format('d/m/Y H:i') : null,
             'createdAt' => $this->reservation->created_at,
         ]);
     }
